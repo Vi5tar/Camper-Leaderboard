@@ -1,0 +1,72 @@
+var last30 = "https://fcctop100.herokuapp.com/api/fccusers/top/recent";
+var allTime = "https://fcctop100.herokuapp.com/api/fccusers/top/alltime";
+var last30Arr = [];
+var allTimeArr = [];
+
+$(document).ready(function() {
+  $.getJSON(last30, function(object) {
+    last30Arr = object;
+
+    $.getJSON(allTime, function(object2) {
+      allTimeArr = object2;
+    });
+    class LeaderBoard extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          input: last30Arr
+        };
+        this.test1 = this.test1.bind(this);
+        this.test2 = this.test2.bind(this);
+      }
+
+      test1() {
+        this.setState({ input: last30Arr });
+      }
+      test2() {
+        this.setState({ input: allTimeArr });
+      }
+      render() {
+        return (
+          <div>
+            <button onClick={this.test1}>test</button>
+            <button onClick={this.test2}>test2</button>
+            <div class="container">
+              <table class="table table-striped table-inverse">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Camper Name</th>
+                    <th>Points in last 30 days</th>
+                    <th>All time points</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td id="user-1">{this.state.input[1].username}</td>
+                    <td id="last30-1" />
+                    <td id="allTime-1" />
+                  </tr>
+                  <tr>
+                    <th scope="row">2</th>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">3</th>
+                    <td>Larry</td>
+                    <td>the Bird</td>
+                    <td>@twitter</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        );
+      }
+    }
+    ReactDOM.render(<LeaderBoard />, document.getElementById("leaderTable"));
+  });
+});
