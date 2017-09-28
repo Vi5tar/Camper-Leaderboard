@@ -16,36 +16,43 @@ $(document).ready(function () {
         this.state = {
           input: last30Arr
         };
-        this.test1 = this.test1.bind(this);
-        this.test2 = this.test2.bind(this);
+        this.last30Sort = this.last30Sort.bind(this);
+        this.allTimeSort = this.allTimeSort.bind(this);
       }
 
-      test1() {
+      last30Sort() {
         this.setState({ input: last30Arr });
+        document.getElementById("stickle").innerHTML = "Points in last 30 days &#9660";
+        document.getElementById("jarpFish").innerHTML = "All time points";
       }
-      test2() {
+      allTimeSort() {
         this.setState({ input: allTimeArr });
+        document.getElementById("stickle").innerHTML = "Points in last 30 days";
+        document.getElementById("jarpFish").innerHTML = "All time points &#9660";
       }
       render() {
+        {/*In search of a way to not have to write out the whole HTML table and variables.
+           This works except for a way to call fucntions and resort the table from the head of the
+           table.
+          {
+           var tableHtml = "<table><thead><tr><th>#</th><th>Camper Name</th><th>Points in last 30 days</th><th>All time points</th></tr></thead><tbody>";
+           for (var i = 0; i < this.state.input.length; i++) {
+             tableHtml += "<tr><th scope='row'>" + (i + 1) + "</th><td>" + this.state.input[i].username + "</td><td>" + this.state.input[i].recent + "</td><td>" + this.state.input[i].alltime + "</td></tr>"
+           }
+           tableHtml += "</tbody></table>";
+           document.getElementById("burgleSnap").innerHTML = tableHtml
+          }
+          */
+        }
         return React.createElement(
           "div",
           null,
           React.createElement(
-            "button",
-            { onClick: this.test1 },
-            "test"
-          ),
-          React.createElement(
-            "button",
-            { onClick: this.test2 },
-            "test2"
-          ),
-          React.createElement(
             "div",
-            { "class": "container" },
+            { className: "container" },
             React.createElement(
               "table",
-              { "class": "table table-striped table-inverse" },
+              { className: "table table-striped table-inverse" },
               React.createElement(
                 "thead",
                 null,
@@ -64,12 +71,12 @@ $(document).ready(function () {
                   ),
                   React.createElement(
                     "th",
-                    null,
-                    "Points in last 30 days"
+                    { id: "stickle", onClick: this.last30Sort },
+                    "Points in last 30 days \u25BC"
                   ),
                   React.createElement(
                     "th",
-                    null,
+                    { id: "jarpFish", onClick: this.allTimeSort },
                     "All time points"
                   )
                 )
@@ -87,11 +94,19 @@ $(document).ready(function () {
                   ),
                   React.createElement(
                     "td",
-                    { id: "user-1" },
-                    this.state.input[1].username
+                    null,
+                    this.state.input[0].username
                   ),
-                  React.createElement("td", { id: "last30-1" }),
-                  React.createElement("td", { id: "allTime-1" })
+                  React.createElement(
+                    "td",
+                    null,
+                    "Otto"
+                  ),
+                  React.createElement(
+                    "td",
+                    null,
+                    "@mdo"
+                  )
                 ),
                 React.createElement(
                   "tr",
@@ -104,7 +119,7 @@ $(document).ready(function () {
                   React.createElement(
                     "td",
                     null,
-                    "Jacob"
+                    this.state.input[1].username
                   ),
                   React.createElement(
                     "td",
@@ -147,6 +162,7 @@ $(document).ready(function () {
         );
       }
     }
+
     ReactDOM.render(React.createElement(LeaderBoard, null), document.getElementById("leaderTable"));
   });
 });
