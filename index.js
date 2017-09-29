@@ -37,7 +37,7 @@ $(document).ready(function () {
       createMarkup() {
         var tableHtml = "";
         for (var i = 0; i < this.state.input.length; i++) {
-          tableHtml += "<tr><th scope='row'>" + (i + 1) + "</th><td><img src=" + this.state.input[i].img + " width=40px />" + this.state.input[i].username + "</td><td>" + this.state.input[i].recent + "</td><td>" + this.state.input[i].alltime + "</td></tr>";
+          tableHtml += "<tr><th scope='row'>" + (i + 1) + "</th><td><img src=" + this.state.input[i].img + " width=40px /> " + this.state.input[i].username + "</td><td>" + this.state.input[i].recent + "</td><td>" + this.state.input[i].alltime + "</td></tr>";
         }
         return { __html: tableHtml };
       }
@@ -49,6 +49,20 @@ $(document).ready(function () {
           React.createElement(
             "div",
             { className: "container" },
+            React.createElement(
+              "div",
+              { className: "navbar" },
+              React.createElement(
+                "div",
+                { className: "navbar-header" },
+                React.createElement(
+                  "a",
+                  { className: "navbar-brand" },
+                  React.createElement("img", { className: "img-responsive nav-logo img-padding", src: "https://s3.amazonaws.com/freecodecamp/freecodecamp_logo.svg" }),
+                  "LeaderBoard"
+                )
+              )
+            ),
             React.createElement(
               "table",
               { className: "table table-striped table-inverse" },

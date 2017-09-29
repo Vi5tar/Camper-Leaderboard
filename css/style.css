@@ -1,3 +1,24 @@
 body {
   margin-top: 5%;
 }
+
+.navbar {
+  background-color: green;
+}
+
+.navbar-header {
+  float: left;
+  text-align: center;
+  font-family: 'Zilla Slab', serif;
+  color: white;
+  width: 100%;
+}
+
+.navbar-brand {
+  float: none;
+  font-size: 33px;
+}
+
+.img-padding {
+  padding-right: 5px;
+}
