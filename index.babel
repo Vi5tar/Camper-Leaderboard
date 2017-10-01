@@ -1,76 +1,75 @@
 var last30 = "https://fcctop100.herokuapp.com/api/fccusers/top/recent";
 var allTime = "https://fcctop100.herokuapp.com/api/fccusers/top/alltime";
-var last30Arr = [];
-var allTimeArr = [];
 
-$(document).ready(function() {
-  $.getJSON(last30, function(object) {
-    last30Arr = object;
+class LeaderBoard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      input: [],
+      last30Arr: [],
+      allTimeArr: []
+    };
+    this.last30Sort = this.last30Sort.bind(this);
+    this.allTimeSort = this.allTimeSort.bind(this);
+    this.createMarkup = this.createMarkup.bind(this);
+  }
 
-    $.getJSON(allTime, function(object2) {
-      allTimeArr = object2;
-    });
+  componentDidMount() {
+    fetch(last30)
+      .then(response => response.json())
+      .then(data => this.setState({input: data, last30Arr: data}));
+    fetch(allTime)
+      .then(response => response.json())
+      .then(data => this.setState({allTimeArr: data}));
+  }
 
-    class LeaderBoard extends React.Component {
-      constructor(props) {
-        super(props);
-        this.state = {
-          input: last30Arr
-        };
-        this.last30Sort = this.last30Sort.bind(this);
-        this.allTimeSort = this.allTimeSort.bind(this);
-        this.createMarkup = this.createMarkup.bind(this);
-      }
+  last30Sort() {
+    this.setState({input: this.state.last30Arr});
+    document.getElementById("stickle").innerHTML = "Points in last 30 days &#9660"
+    document.getElementById("jarpFish").innerHTML = "All time points"
+  }
 
-      last30Sort() {
-        this.setState({input: last30Arr});
-        document.getElementById("stickle").innerHTML = "Points in last 30 days &#9660"
-        document.getElementById("jarpFish").innerHTML = "All time points"
-      }
+  allTimeSort() {
+    this.setState({input: this.state.allTimeArr});
+    document.getElementById("stickle").innerHTML = "Points in last 30 days"
+    document.getElementById("jarpFish").innerHTML = "All time points &#9660"
+  }
 
-      allTimeSort() {
-        this.setState({input: allTimeArr});
-        document.getElementById("stickle").innerHTML = "Points in last 30 days"
-        document.getElementById("jarpFish").innerHTML = "All time points &#9660"
-      }
+  createMarkup() {
+    var tableHtml = "";
+    for (var i = 0; i < this.state.input.length; i++) {
+      tableHtml += "<tr><th scope='row'>" + (i + 1) + "</th><td><img src=" + this.state.input[i].img + " width=40px /> " + this.state.input[i].username + "</td><td>" + this.state.input[i].recent + "</td><td>" + this.state.input[i].alltime + "</td></tr>"
+    }
+    return {__html: tableHtml};
+  }
 
-      createMarkup() {
-        var tableHtml = "";
-        for (var i = 0; i < this.state.input.length; i++) {
-          tableHtml += "<tr><th scope='row'>" + (i + 1) + "</th><td><img src=" + this.state.input[i].img + " width=40px /> " + this.state.input[i].username + "</td><td>" + this.state.input[i].recent + "</td><td>" + this.state.input[i].alltime + "</td></tr>"
-        }
-        return {__html: tableHtml};
-      }
-
-      render() {
-        return (
-          <div>
-            <div className="container">
-              <div className="navbar">
-                <div className="navbar-header">
-                  <a className="navbar-brand">
-                    <img className="img-responsive nav-logo img-padding" src="https://s3.amazonaws.com/freecodecamp/freecodecamp_logo.svg"/>
-                    LeaderBoard
-                  </a>
-                </div>
-              </div>
-              <table className="table table-striped table-inverse">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Camper Name</th>
-                    <th id="stickle" onClick={this.last30Sort}>Points in last 30 days ▼</th>
-                    <th id="jarpFish" onClick={this.allTimeSort}>All time points</th>
-                  </tr>
-                </thead>
-                <tbody dangerouslySetInnerHTML={this.createMarkup()}/>
-              </table>
+  render() {
+    return (
+      <div>
+        <div className="container">
+          <div className="navbar">
+            <div className="navbar-header">
+              <a className="navbar-brand">
+                <img className="img-responsive nav-logo img-padding" src="https://s3.amazonaws.com/freecodecamp/freecodecamp_logo.svg"/>
+                LeaderBoard
+              </a>
             </div>
           </div>
-        );
-      }
-    }
-    ReactDOM.render(
-      <LeaderBoard/>, document.getElementById("leaderTable"));
-  });
-});
+          <table className="table table-striped table-inverse">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Camper Name</th>
+                <th id="stickle" onClick={this.last30Sort}>Points in last 30 days ▼</th>
+                <th id="jarpFish" onClick={this.allTimeSort}>All time points</th>
+              </tr>
+            </thead>
+            <tbody dangerouslySetInnerHTML={this.createMarkup()}/>
+          </table>
+        </div>
+      </div>
+    );
+  }
+}
+ReactDOM.render(
+  <LeaderBoard/>, document.getElementById("leaderTable"));
